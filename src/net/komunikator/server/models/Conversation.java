@@ -2,8 +2,8 @@ package net.komunikator.server.models;
 
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.MessageListener;
-import org.jivesoftware.smack.packet.Message;
 
+import java.util.Date;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -17,8 +17,9 @@ public class Conversation {
     Queue<Message> messages;
     MessageListener messageListener = new MessageListener() {
         @Override
-        public void processMessage(Chat chat, Message message) {
-            messages.add(message);
+        public void processMessage(Chat chat, org.jivesoftware.smack.packet.Message message) {
+            Message newMess = new Message(new Date(), contact, message.getBody(), connection);
+            messages.add(newMess);
         }
     };
 
@@ -29,5 +30,8 @@ public class Conversation {
         chat = connection.getConnection().getChatManager().createChat(contact.getJid(), messageListener);
     }
 
+    public Message getNewMessage() {
+        return messages.poll();
+    }
 
 }

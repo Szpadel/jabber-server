@@ -10,6 +10,7 @@ public class Contact {
     int status;
     String jid;
     String statusDescription;
+    Conversation conversation;
 
     public Contact(int id, Connection connection, String name) {
         this.id = id;
@@ -68,5 +69,12 @@ public class Contact {
 
     public void setJid(String jid) {
         this.jid = jid;
+    }
+
+    public Conversation getConversation() {
+        if (conversation == null) {
+            conversation = new Conversation(connection, this);
+        }
+        return conversation;
     }
 }

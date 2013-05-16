@@ -11,18 +11,12 @@ public class Message {
     Contact contact;
     Connection connection;
     String message;
-    org.jivesoftware.smack.packet.Message smackMessage;
 
-    public Message(org.jivesoftware.smack.packet.Message message, Connection connection, Contact contact) {
-        this.connection = connection;
-        this.contact = contact;
-        this.smackMessage = message;
-    }
-
-    public Message(Date timestamp, Contact contact, String message) {
+    public Message(Date timestamp, Contact contact, String message, Connection connection) {
         this.timestamp = timestamp;
         this.contact = contact;
         this.message = message;
+        this.connection = connection;
     }
 
     public int getId() {
