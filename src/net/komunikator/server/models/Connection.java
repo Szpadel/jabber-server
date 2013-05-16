@@ -1,5 +1,9 @@
 package net.komunikator.server.models;
 
+import org.jivesoftware.smack.XMPPConnection;
+import org.jivesoftware.smack.XMPPException;
+import org.jivesoftware.smack.packet.Presence;
+
 import javax.crypto.Cipher;
 import javax.crypto.NullCipher;
 import javax.persistence.PostLoad;
@@ -7,11 +11,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
 /**
- * Created with IntelliJ IDEA.
- * User: ziomek
- * Date: 25.03.13
- * Time: 16:56
- * To change this template use File | Settings | File Templates.
+ * @Author Piotr Rogowski<piotrekrogowski@gmail.com>
  */
 public class Connection {
     int id;
@@ -22,6 +22,7 @@ public class Connection {
     String resource;
 
     Cipher crypto;
+    org.jivesoftware.smack.Connection connection;
 
     public Connection(int id, String name, String username, String domain, String resource) {
         this.id = id;
@@ -98,5 +99,36 @@ public class Connection {
     @PostLoad
     void postLoad(Object object) {
         //TODO: deszyfrowanie
+    }
+
+    public boolean connect()
+    {
+        if(connection == null)
+        {
+            connection = new XMPPConnection(domain);
+        }
+        try {
+            connection.connect();
+            connection.login(username, password, resource);
+        } catch (XMPPException e) {
+            return false;
+        }
+        return true;
+    }
+
+    public void disconnect()
+    {
+        if(connection != null)
+        {
+            connection.disconnect();
+        }
+    }
+
+    public void setStatus(Presence.Type type, String description)
+    {
+        Presence presence = new Presence(Presence.Type.unavailable);
+        presence.setType(type);
+        presence.setStatus(description);
+        connection.sendPacket(presence);
     }
 }
