@@ -1,5 +1,7 @@
 package net.komunikator.server.models;
 
+import net.komunikator.server.exceptions.NotConnectedException;
+import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.packet.Presence;
@@ -9,9 +11,11 @@ import javax.crypto.NullCipher;
 import javax.persistence.PostLoad;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
- * @Author Piotr Rogowski<piotrekrogowski@gmail.com>
+ * @author Piotr Rogowski<piotrekrogowski@gmail.com>
  */
 public class Connection {
     int id;
@@ -20,9 +24,9 @@ public class Connection {
     String password;
     String domain;
     String resource;
-
     Cipher crypto;
     org.jivesoftware.smack.Connection connection;
+    Map<String, Chat> openChats;
 
     public Connection(int id, String name, String username, String domain, String resource) {
         this.id = id;
@@ -30,12 +34,19 @@ public class Connection {
         this.username = username;
         this.domain = domain;
         this.resource = resource;
+
+        openChats = new LinkedHashMap<String, Chat>();
+
         try {
             crypto = Cipher.getInstance("DES");
         } catch (Exception e) {
             e.printStackTrace();
             crypto = new NullCipher();
         }
+    }
+
+    public org.jivesoftware.smack.Connection getConnection() {
+        return connection;
     }
 
     public int getId() {
@@ -101,10 +112,8 @@ public class Connection {
         //TODO: deszyfrowanie
     }
 
-    public boolean connect()
-    {
-        if(connection == null)
-        {
+    public boolean connect() {
+        if (connection == null) {
             connection = new XMPPConnection(domain);
         }
         try {
@@ -116,16 +125,20 @@ public class Connection {
         return true;
     }
 
-    public void disconnect()
-    {
-        if(connection != null)
-        {
+    protected void throwIfCotConnected() throws NotConnectedException {
+        if (connection == null || !connection.isConnected()) {
+            throw new NotConnectedException();
+        }
+    }
+
+    public void disconnect() {
+        if (connection != null) {
             connection.disconnect();
         }
     }
 
-    public void setStatus(Presence.Type type, String description)
-    {
+    public void setStatus(Presence.Type type, String description) throws NotConnectedException {
+        throwIfCotConnected();
         Presence presence = new Presence(Presence.Type.unavailable);
         presence.setType(type);
         presence.setStatus(description);

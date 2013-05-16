@@ -1,17 +1,14 @@
 package net.komunikator.server.models;
 
 /**
- * Created with IntelliJ IDEA.
- * User: ziomek
- * Date: 25.03.13
- * Time: 17:00
- * To change this template use File | Settings | File Templates.
+ * @author Piotr Rogowski<piotrekrogowski@gmail.com>
  */
 public class Contact {
     int id;
     Connection connection;
     String name;
     int status;
+    String jid;
     String statusDescription;
 
     public Contact(int id, Connection connection, String name) {
@@ -20,8 +17,7 @@ public class Contact {
         this.name = name;
     }
 
-    public void updateStatus(int status, String description)
-    {
+    public void updateStatus(int status, String description) {
         this.status = status;
         this.statusDescription = description;
     }
@@ -64,5 +60,13 @@ public class Contact {
 
     public void setStatusDescription(String statusDescription) {
         this.statusDescription = statusDescription;
+    }
+
+    public String getJid() {
+        return jid;
+    }
+
+    public void setJid(String jid) {
+        this.jid = jid;
     }
 }

@@ -3,20 +3,23 @@ package net.komunikator.server.models;
 import java.util.Date;
 
 /**
- * Created with IntelliJ IDEA.
- * User: ziomek
- * Date: 25.03.13
- * Time: 17:03
- * To change this template use File | Settings | File Templates.
+ * @author Piotr Rogowski<piotrekrogowski@gmail.com>
  */
 public class Message {
     int id;
     Date timestamp;
     Contact contact;
+    Connection connection;
     String message;
+    org.jivesoftware.smack.packet.Message smackMessage;
 
-    public Message(int id, Date timestamp, Contact contact, String message) {
-        this.id = id;
+    public Message(org.jivesoftware.smack.packet.Message message, Connection connection, Contact contact) {
+        this.connection = connection;
+        this.contact = contact;
+        this.smackMessage = message;
+    }
+
+    public Message(Date timestamp, Contact contact, String message) {
         this.timestamp = timestamp;
         this.contact = contact;
         this.message = message;
