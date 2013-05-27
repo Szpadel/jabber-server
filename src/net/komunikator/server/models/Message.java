@@ -11,12 +11,17 @@ public class Message {
     Contact contact;
     Connection connection;
     String message;
+    int sendBy;
 
-    public Message(Date timestamp, Contact contact, String message, Connection connection) {
+    public static final int SEND_BY_CONTACT = 0;
+    public static final int SEND_BY_ME = 1;
+
+    public Message(Date timestamp, Contact contact, String message, Connection connection, int sendBy) {
         this.timestamp = timestamp;
         this.contact = contact;
         this.message = message;
         this.connection = connection;
+        this.sendBy = sendBy;
     }
 
     public int getId() {
