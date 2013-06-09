@@ -6,25 +6,22 @@ import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.packet.Presence;
 
-import javax.crypto.Cipher;
-import javax.crypto.NullCipher;
-import javax.persistence.PostLoad;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
  * @author Piotr Rogowski<piotrekrogowski@gmail.com>
  */
+
 public class Connection {
+
+
     int id;
     String name;
     String username;
     String password;
     String domain;
     String resource;
-    Cipher crypto;
     org.jivesoftware.smack.Connection connection;
     Map<String, Chat> openChats;
 
@@ -37,12 +34,7 @@ public class Connection {
 
         openChats = new LinkedHashMap<String, Chat>();
 
-        try {
-            crypto = Cipher.getInstance("DES");
-        } catch (Exception e) {
-            e.printStackTrace();
-            crypto = new NullCipher();
-        }
+
     }
 
     public org.jivesoftware.smack.Connection getConnection() {
@@ -97,20 +89,6 @@ public class Connection {
         this.password = password;
     }
 
-    @PrePersist
-    void prePersist(Object object) {
-        //TODO: szyfrowanie
-    }
-
-    @PreUpdate
-    void preUpdate(Object object) {
-        //TODO: szyfrowanie
-    }
-
-    @PostLoad
-    void postLoad(Object object) {
-        //TODO: deszyfrowanie
-    }
 
     public boolean connect() {
         if (connection == null) {
