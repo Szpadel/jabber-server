@@ -55,4 +55,20 @@ public class Message {
     public void setMessage(String message) {
         this.message = message;
     }
+
+    public Connection getConnection() {
+        return connection;
+    }
+
+    public void setConnection(Connection connection) {
+        this.connection = connection;
+    }
+
+    public int getSendBy() {
+        return sendBy;
+    }
+
+    public void setSendBy(int sendBy) {
+        this.sendBy = sendBy;
+    }
 }
