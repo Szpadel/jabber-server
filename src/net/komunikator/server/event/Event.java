@@ -17,4 +17,11 @@ public abstract class Event {
     public boolean isCanceled() {
         return canceled;
     }
+
+    /**
+     * Resets event to primary state before event was called
+     */
+    public void reset() {
+        canceled = false;
+    }
 }
