@@ -4,6 +4,7 @@ import net.komunikator.server.common.PriorityLinkedList;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * Created with IntelliJ IDEA.
@@ -22,6 +23,8 @@ public class EventDispatcher {
     final private Map<String, PriorityLinkedList<EventListenerInterface>> listeners = new HashMap<String,
             PriorityLinkedList<EventListenerInterface>>();
 
+    protected Logger logger = Logger.getLogger(this.getClass().getName());
+
     private EventDispatcher() {
     }
 
@@ -35,6 +38,7 @@ public class EventDispatcher {
             listeners.put(eventName, list = new PriorityLinkedList<EventListenerInterface>());
         }
         list.add(eventListener, priotity);
+        logger.fine("Registered event listener to event " + eventName);
     }
 
     public void unregisterListener(String eventName, EventListenerInterface eventListener) {
@@ -44,15 +48,19 @@ public class EventDispatcher {
             return;
         }
         list.remove(eventListener);
+        logger.fine("Unregistered event listener from event " + eventName);
     }
 
     public void dispatch(String eventName, Event event) {
+        logger.fine("Dispatching event " + eventName);
         PriorityLinkedList<EventListenerInterface> list = listeners.get(eventName);
         if (list == null) {
             return;
         }
         for (EventListenerInterface eventListener : list.toList()) {
+            logger.finest("Dispatching event to " + eventListener.getClass().getName());
             if (event.isCanceled()) {
+                logger.finer("Event " + event.getClass().getName() + "canceled, breaking propagation!");
                 break;
             }
             eventListener.receiveEvent(event);

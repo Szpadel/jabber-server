@@ -19,13 +19,13 @@ import java.util.logging.Logger;
 public class UpdatesManager {
     private static UpdatesManager ourInstance = new UpdatesManager();
 
-    private final Logger logger = Logger.getLogger(UpdatesManager.class.getName());
-
     private Map<Long, Queue<Model>> pendingUpdates = new HashMap<Long, Queue<Model>>();
 
     public static UpdatesManager getInstance() {
         return ourInstance;
     }
+
+    protected Logger logger = Logger.getLogger(this.getClass().getName());
 
     private EventListenerInterface modelCreatedListener = new EventListenerInterface() {
         @Override

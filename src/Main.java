@@ -1,4 +1,5 @@
 import net.komunikator.server.console.ConsoleThread;
+import net.komunikator.server.managers.UpdatesManager;
 
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -22,6 +23,9 @@ public class Main {
             handler.setLevel(Level.ALL);
         }
         LOGGER.info("Server started");
+
+        UpdatesManager.getInstance(); // initialize
+
         consoleThread.start();
     }
 
