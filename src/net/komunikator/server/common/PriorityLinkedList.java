@@ -19,7 +19,7 @@ public class PriorityLinkedList<E> {
     public static final int LOW_PRIORITY = 3;
     public static final int LOWEST_PRIORITY = 4;
 
-    final private List<E>[] lists = new List[5];
+    final private List<List<E>> lists = new ArrayList<List<E>>(5);
 
     private List<E> prioritizedList;
 
@@ -38,7 +38,7 @@ public class PriorityLinkedList<E> {
                 throw new InvalidParameterException("Object already in list");
             }
         }
-        lists[priority].add(object);
+        lists.get(priority).add(object);
         size++;
         prioritizedList = null;
     }
