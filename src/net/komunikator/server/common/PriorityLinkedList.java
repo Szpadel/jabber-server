@@ -2,6 +2,7 @@ package net.komunikator.server.common;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -24,6 +25,12 @@ public class PriorityLinkedList<E> {
     private List<E> prioritizedList;
 
     private int size = 0;
+
+    public PriorityLinkedList() {
+        for (int a = 0; a < 5; a++) {
+            lists.add(new LinkedList<E>());
+        }
+    }
 
     private void checkPriority(int priority) {
         if (priority > 4 || priority < 0) {
