@@ -1,13 +1,13 @@
-package net.komunikator.server.plugin.events;
+package net.komunikator.server.event;
 
 /**
  * Created with IntelliJ IDEA.
  * User: ziomek
- * Date: 17.06.13
- * Time: 13:46
+ * Date: 30.08.13
+ * Time: 16:32
  * To change this template use File | Settings | File Templates.
  */
-abstract public class Event {
+public abstract class Event {
     boolean canceled = false;
 
     public void cancel() {
