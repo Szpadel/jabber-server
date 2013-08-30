@@ -3,7 +3,7 @@ package net.komunikator.server.models;
 /**
  * @author Piotr Rogowski<piotrekrogowski@gmail.com>
  */
-public class Contact {
+public class Contact extends Model {
     int id;
     Connection connection;
     String name;
@@ -16,19 +16,17 @@ public class Contact {
         this.id = id;
         this.connection = connection;
         this.name = name;
+        changed();
     }
 
     public void updateStatus(int status, String description) {
         this.status = status;
         this.statusDescription = description;
+        changed();
     }
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public Connection getConnection() {
@@ -37,6 +35,7 @@ public class Contact {
 
     public void setConnection(Connection connection) {
         this.connection = connection;
+        changed();
     }
 
     public String getName() {
@@ -45,6 +44,7 @@ public class Contact {
 
     public void setName(String name) {
         this.name = name;
+        changed();
     }
 
     public int getStatus() {
@@ -53,6 +53,7 @@ public class Contact {
 
     public void setStatus(int status) {
         this.status = status;
+        changed();
     }
 
     public String getStatusDescription() {
@@ -61,6 +62,7 @@ public class Contact {
 
     public void setStatusDescription(String statusDescription) {
         this.statusDescription = statusDescription;
+        changed();
     }
 
     public String getJid() {
@@ -69,6 +71,7 @@ public class Contact {
 
     public void setJid(String jid) {
         this.jid = jid;
+        changed();
     }
 
     public Conversation getConversation() {
@@ -76,5 +79,10 @@ public class Contact {
             conversation = new Conversation(connection, this);
         }
         return conversation;
+    }
+
+    @Override
+    public String getModelName() {
+        return "Contact";
     }
 }

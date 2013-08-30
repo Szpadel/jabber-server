@@ -5,7 +5,7 @@ import java.util.Date;
 /**
  * @author Piotr Rogowski<piotrekrogowski@gmail.com>
  */
-public class Message {
+public class Message extends Model {
     int id;
     Date timestamp;
     Contact contact;
@@ -22,6 +22,8 @@ public class Message {
         this.message = message;
         this.connection = connection;
         this.sendBy = sendBy;
+
+        changed();
     }
 
     public int getId() {
@@ -70,5 +72,10 @@ public class Message {
 
     public void setSendBy(int sendBy) {
         this.sendBy = sendBy;
+    }
+
+    @Override
+    public String getModelName() {
+        return "Message";
     }
 }

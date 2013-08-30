@@ -14,7 +14,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 /**
  * @author Piotr Rogowski<piotrekrogowski@gmail.com>
  */
-public class Conversation {
+public class Conversation extends Model {
     Connection connection;
     Contact contact;
     Chat chat;
@@ -35,6 +35,8 @@ public class Conversation {
         messages = new LinkedBlockingQueue<Message>();
         chat = connection.getConnection().getChatManager().createChat(contact.getJid(), messageListener);
         history = new LinkedList<Message>();
+
+        changed();
     }
 
     public Message getNewMessage() {
@@ -46,10 +48,20 @@ public class Conversation {
             chat.sendMessage(msg);
             Message mess = new Message(new Date(), contact, msg, connection, Message.SEND_BY_ME);
             history.add(mess);
+            changed();
 
         } catch (XMPPException e) {
             throw new ConnectionException("Can't send message", e);
         }
     }
 
+    @Override
+    public String getModelName() {
+        return "Conversation";
+    }
+
+    @Override
+    public int getId() {
+        return 0; // Conversation isn't real model
+    }
 }
