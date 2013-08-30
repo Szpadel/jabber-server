@@ -1,5 +1,6 @@
 package net.komunikator.server.managers;
 
+import net.komunikator.server.event.*;
 import net.komunikator.server.models.Model;
 
 import java.util.HashMap;
@@ -26,10 +27,29 @@ public class UpdatesManager {
         return ourInstance;
     }
 
+    private EventListenerInterface modelCreatedListener = new EventListenerInterface() {
+        @Override
+        public void receiveEvent(Event event) {
+            ModelCreatedEvent modelCreatedEvent = (ModelCreatedEvent) event;
+            addUpdated(modelCreatedEvent.getModel());
+        }
+    };
+
+    private EventListenerInterface modelUpdatedListener = new EventListenerInterface() {
+        @Override
+        public void receiveEvent(Event event) {
+            ModelUpdatedEvent modelUpdatedEvent = (ModelUpdatedEvent) event;
+            addUpdated(modelUpdatedEvent.getModel());
+        }
+    };
+
     private UpdatesManager() {
+        EventDispatcher eventDispatcher = EventDispatcher.getInstance();
+        eventDispatcher.registerListener("model.created", modelCreatedListener);
+        eventDispatcher.registerListener("model.updated", modelUpdatedListener);
     }
 
-    public void addUpdated(Model model) {
+    protected void addUpdated(Model model) {
         for (Map.Entry<Long, Queue<Model>> queueSet : pendingUpdates.entrySet()) {
             if (!queueSet.getValue().contains(model)) {
                 queueSet.getValue().add(model);

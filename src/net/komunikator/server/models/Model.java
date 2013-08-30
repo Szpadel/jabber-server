@@ -1,6 +1,8 @@
 package net.komunikator.server.models;
 
-import net.komunikator.server.managers.UpdatesManager;
+import net.komunikator.server.event.EventDispatcher;
+import net.komunikator.server.event.ModelCreatedEvent;
+import net.komunikator.server.event.ModelUpdatedEvent;
 
 import java.util.Date;
 import java.util.logging.Logger;
@@ -14,9 +16,8 @@ import java.util.logging.Logger;
  */
 abstract public class Model {
     protected Date lastUpdated = new Date();
-    protected UpdatesManager updatesManager = UpdatesManager.getInstance();
+    protected EventDispatcher eventDispatcher = EventDispatcher.getInstance();
     protected Logger logger = Logger.getLogger(this.getClass().getName());
-
 
     abstract public String getModelName();
 
@@ -24,6 +25,19 @@ abstract public class Model {
 
     protected void changed() {
         lastUpdated = new Date();
-        updatesManager.addUpdated(this);
+        ModelUpdatedEvent event = new ModelUpdatedEvent(this, (Date) lastUpdated.clone());
+
+        eventDispatcher.dispatch("model." + getModelName().toLowerCase() + ".updated", event);
+        event.reset();
+        eventDispatcher.dispatch("model.updated", event);
+    }
+
+    protected void created() {
+        lastUpdated = new Date();
+        ModelCreatedEvent event = new ModelCreatedEvent(this, (Date) lastUpdated.clone());
+
+        eventDispatcher.dispatch("model." + getModelName().toLowerCase() + ".created", event);
+        event.reset();
+        eventDispatcher.dispatch("model.created", event);
     }
 }
