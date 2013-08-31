@@ -52,7 +52,7 @@ public class ConnectionCommand extends Command {
             }
         } else if (command.startsWith("disconnect ")) {
             try {
-                int id = Integer.parseInt(command.substring("connect ".length()).trim());
+                int id = Integer.parseInt(command.substring("disconnect ".length()).trim());
                 ConnectionManager.getInstance().getConnection(id).disconnect();
                 out.println("OK");
             } catch (NumberFormatException e) {
