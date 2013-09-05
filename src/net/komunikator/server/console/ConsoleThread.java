@@ -1,5 +1,8 @@
 package net.komunikator.server.console;
 
+import net.komunikator.server.event.EventDispatcher;
+import net.komunikator.server.event.ShutdownEvent;
+
 import java.io.PrintStream;
 import java.util.Scanner;
 
@@ -14,6 +17,8 @@ public class ConsoleThread extends Thread {
     Scanner s = new Scanner(System.in);
     PrintStream out = System.out;
 
+    EventDispatcher eventDispatcher = EventDispatcher.getInstance();
+
     private void printHelp() {
         out.println("Available commands:");
         out.println("help       - prints this list, Sherlock");
@@ -24,6 +29,7 @@ public class ConsoleThread extends Thread {
 
     private void shutdown() {
         // place for server shutdown procedure
+        eventDispatcher.dispatch("server.shutdown", new ShutdownEvent("Shutdown"));
     }
 
     @Override
@@ -34,7 +40,9 @@ public class ConsoleThread extends Thread {
             out.print("debug> ");
             line = s.nextLine() + " ";
 
-            if (line.startsWith("help ") || line.startsWith("h ") || line.startsWith("? ")) {
+            if (line.trim().equals("")) {
+                // do nothing
+            } else if (line.startsWith("help ") || line.startsWith("h ") || line.startsWith("? ")) {
                 printHelp();
             } else if (line.startsWith("create ")) {
                 line = line.substring("create ".length());

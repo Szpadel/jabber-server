@@ -12,10 +12,11 @@ public class Contact extends Model {
     String statusDescription;
     Conversation conversation;
 
-    public Contact(int id, Connection connection, String name) {
+    public Contact(int id, Connection connection, String name, String jid) {
         this.id = id;
         this.connection = connection;
         this.name = name;
+        this.jid = jid;
         changed();
     }
 

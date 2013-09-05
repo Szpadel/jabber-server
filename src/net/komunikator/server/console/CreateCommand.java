@@ -1,7 +1,9 @@
 package net.komunikator.server.console;
 
 import net.komunikator.server.managers.ConnectionManager;
+import net.komunikator.server.managers.ContactManager;
 import net.komunikator.server.models.Connection;
+import net.komunikator.server.models.Contact;
 
 import java.io.PrintStream;
 import java.util.Random;
@@ -70,10 +72,40 @@ public class CreateCommand extends Command {
             connectionManager.addConnection(connection);
 
             out.println("OK");
+        } else if (line.startsWith("contact ")) {
+            line.substring("contact ".length());
+            String params[] = line.trim().split(" ");
 
+            if (params.length != 3) {
+                out.println("Invalid parameters number");
+                return;
+            }
+
+            int connId;
+            try {
+                connId = Integer.parseInt(params[0]);
+            } catch (NumberFormatException e) {
+                out.println("invalid id");
+                return;
+            }
+            String name = params[1];
+            String jid = params[2];
+
+            ConnectionManager connectionManager = ConnectionManager.getInstance();
+            ContactManager contactManager = ContactManager.getInstance();
+
+            Connection connection = connectionManager.getConnection(connId);
+
+            if (connection == null) {
+                out.println("connection doesn't exists");
+            }
+
+            Contact contact = new Contact(contactManager.reserveNextId(), connection, name, jid);
+            contactManager.addContact(contact);
         } else {
             out.println("syntax: create ");
             out.println("               connection [name] [username@domain/resource]");
+            out.println("               contact [connection id] [name] [jid]");
         }
     }
 }

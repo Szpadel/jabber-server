@@ -1,5 +1,7 @@
 package net.komunikator.server.models;
 
+import net.komunikator.server.event.Event;
+import net.komunikator.server.event.EventListenerInterface;
 import net.komunikator.server.exceptions.NotConnectedException;
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.XMPPConnection;
@@ -33,6 +35,13 @@ public class Connection extends Model {
         this.domain = domain;
         this.resource = resource;
         this.password = password;
+
+        eventDispatcher.registerListener("server.shutdown", new EventListenerInterface() {
+            @Override
+            public void receiveEvent(Event event) {
+                disconnect();
+            }
+        });
 
         openChats = new LinkedHashMap<String, Chat>();
         changed();
