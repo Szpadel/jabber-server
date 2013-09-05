@@ -44,7 +44,7 @@ public class Connection extends Model {
         });
 
         openChats = new LinkedHashMap<String, Chat>();
-        changed();
+        created();
 
     }
 
