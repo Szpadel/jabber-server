@@ -65,10 +65,11 @@ public class CreateCommand extends Command {
 
             String domain = jidParams[0];
 
-            String password = System.console().readPassword("password:").toString();
+            char[] password = System.console().readPassword("password:");
 
             ConnectionManager connectionManager = ConnectionManager.getInstance();
-            Connection connection = new Connection(connectionManager.reserveNextId(), name, username, domain, resource, password);
+            Connection connection = new Connection(connectionManager.reserveNextId(), name, username, domain,
+                    resource, String.valueOf(password));
             connectionManager.addConnection(connection);
 
             out.println("OK");
