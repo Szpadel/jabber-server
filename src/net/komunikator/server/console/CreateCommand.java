@@ -74,8 +74,8 @@ public class CreateCommand extends Command {
 
             out.println("OK");
         } else if (line.startsWith("contact ")) {
-            line.substring("contact ".length());
-            String params[] = line.trim().split(" ");
+            line = line.substring("contact ".length());
+            String params[] = line.trim().split(" ", 3);
 
             if (params.length != 3) {
                 out.println("Invalid parameters number");
