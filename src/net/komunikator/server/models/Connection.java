@@ -49,10 +49,7 @@ public class Connection extends Model {
     }
 
     public boolean isConnected() {
-        if (connection == null) {
-            return false;
-        }
-        return connection.isConnected();
+        return connection != null && connection.isConnected();
     }
 
     public org.jivesoftware.smack.Connection getConnection() {
