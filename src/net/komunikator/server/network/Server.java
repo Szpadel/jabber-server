@@ -37,6 +37,7 @@ public class Server implements ServerInterface {
         Session session = new Session(sessionId, sessionName, this);
         loggedClients.add(session);
         logger.info("User authenticated! user:" + sessionName + " id:" + sessionId);
+        clientCallback.toast("Login successful");
         sessionId++;
         return session;
     }
