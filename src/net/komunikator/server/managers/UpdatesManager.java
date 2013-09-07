@@ -2,6 +2,7 @@ package net.komunikator.server.managers;
 
 import net.komunikator.server.event.*;
 import net.komunikator.server.models.Model;
+import net.komunikator.server.network.Session;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -58,7 +59,8 @@ public class UpdatesManager {
         logger.finer("Model " + model.getModelName() + " id:" + model.getId() + " was changed");
     }
 
-    public void registerClient(Long clientToken) {
+    public void registerClient(Session session) {
+        long clientToken = session.getSessionId();
         if (pendingUpdates.containsKey(clientToken)) {
             logger.warning("Client id " + clientToken + " already registered, aborting!");
             return;

@@ -2,12 +2,15 @@ package net.komunikator.server.network;
 
 import de.root1.simon.annotation.SimonRemote;
 import net.komunikator.server.common.Config;
+import net.komunikator.server.managers.UpdatesManager;
 import net.komunikator.shared.network.ClientCallbackInterface;
 import net.komunikator.shared.network.ServerInterface;
 import net.komunikator.shared.network.SessionInterface;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -25,6 +28,7 @@ public class Server implements ServerInterface {
     long sessionId = 1;
 
     private List<Session> loggedClients = new LinkedList<Session>();
+    private Map<Long, Session> sessions = new HashMap<Long, Session>();
 
     @Override
     public SessionInterface login(String sessionName, String password, ClientCallbackInterface clientCallback) {
@@ -36,14 +40,24 @@ public class Server implements ServerInterface {
         }
         Session session = new Session(sessionId, sessionName, this);
         loggedClients.add(session);
+        sessions.put(sessionId, session);
         logger.info("User authenticated! user:" + sessionName + " id:" + sessionId);
         clientCallback.toast("Login successful");
+
+        UpdatesManager updatesManager = UpdatesManager.getInstance();
+        updatesManager.registerClient(session);
+
         sessionId++;
         return session;
+    }
+
+    public Session getSession(long sessionId) {
+        return sessions.get(sessionId);
     }
 
     public void removeSession(Session session) {
         logger.info("Removing session id:" + session.getSessionId() + " name:" + session.getSessionName());
         loggedClients.remove(session);
+        sessions.remove(session.getSessionId());
     }
 }
