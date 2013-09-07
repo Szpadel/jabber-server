@@ -1,6 +1,7 @@
 package net.komunikator.server.network;
 
 import de.root1.simon.annotation.SimonRemote;
+import net.komunikator.server.common.Config;
 import net.komunikator.shared.network.ClientCallbackInterface;
 import net.komunikator.shared.network.ServerInterface;
 import net.komunikator.shared.network.SessionInterface;
@@ -21,20 +22,14 @@ public class Server implements ServerInterface {
 
     private Logger logger = Logger.getLogger(this.getClass().getName());
 
-    String password;
-
     long sessionId = 1;
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     private List<Session> loggedClients = new LinkedList<Session>();
 
     @Override
     public SessionInterface login(String sessionName, String password, ClientCallbackInterface clientCallback) {
         logger.info("User authentication. user:" + sessionName);
-        if (!password.equals(this.password)) {
+        if (!password.equals(Config.password)) {
             clientCallback.toast("Authentication failed! Wrong password");
             logger.info("Authentication failed! Wrong password. user:" + sessionName);
             return null;
