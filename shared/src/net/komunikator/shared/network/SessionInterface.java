@@ -13,4 +13,6 @@ public interface SessionInterface {
     public long getSessionId();
 
     public String getSessionName();
+
+    public boolean isValid();
 }

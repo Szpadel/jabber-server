@@ -1,5 +1,7 @@
 package net.komunikator.server.common;
 
+import net.komunikator.server.network.Server;
+
 /**
  * Created with IntelliJ IDEA.
  * User: ziomek
@@ -7,7 +9,8 @@ package net.komunikator.server.common;
  * Time: 14:14
  * To change this template use File | Settings | File Templates.
  */
-public class Config {
+public class SharedData {
 
     public static String password;
+    public static Server serverObject;
 }

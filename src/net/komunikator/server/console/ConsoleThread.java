@@ -1,6 +1,6 @@
 package net.komunikator.server.console;
 
-import net.komunikator.server.common.Config;
+import net.komunikator.server.common.SharedData;
 import net.komunikator.server.event.Event;
 import net.komunikator.server.event.EventDispatcher;
 import net.komunikator.server.event.EventListenerInterface;
@@ -44,6 +44,7 @@ public class ConsoleThread extends Thread {
         out.println("create     - create objects");
         out.println("connection - connections management");
         out.println("password   - set password");
+        out.println("client     - connected clients management");
         out.println("quit       - close server");
     }
 
@@ -84,9 +85,13 @@ public class ConsoleThread extends Thread {
                     connection.runCommand(out, line);
                 } else if (line.startsWith("quit ")) {
                     callShutdown();
+                }else if (line.startsWith("client ")) {
+                    line = line.substring("client ".length());
+                    Command client = new ClientCommand();
+                    client.runCommand(out, line);
                 } else if (line.startsWith("password ")) {
                     char[] password = System.console().readPassword("password:");
-                    Config.password = String.valueOf(password);
+                    SharedData.password = String.valueOf(password);
                     out.println("Success");
                 } else {
                     out.println("command invalid, type 'help'");

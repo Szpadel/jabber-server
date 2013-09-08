@@ -36,7 +36,12 @@ public class Session implements SessionInterface, SimonUnreferenced, Serializabl
     }
 
     @Override
-    public void unreferenced() {
+    public boolean isValid() {
+        return server.getSession(sessionId) != null;
+    }
 
+    @Override
+    public void unreferenced() {
+        server.removeSession(this);
     }
 }

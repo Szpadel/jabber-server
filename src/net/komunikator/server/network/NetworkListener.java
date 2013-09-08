@@ -3,6 +3,7 @@ package net.komunikator.server.network;
 import de.root1.simon.Registry;
 import de.root1.simon.Simon;
 import de.root1.simon.exceptions.NameBindingException;
+import net.komunikator.server.common.SharedData;
 import net.komunikator.server.event.Event;
 import net.komunikator.server.event.EventDispatcher;
 import net.komunikator.server.event.EventListenerInterface;
@@ -42,6 +43,7 @@ public class NetworkListener {
         registry = Simon.createRegistry(port);
         registry.start();
         registry.bind("server", server);
+        SharedData.serverObject = server;
         logger.info("Network up and running on port " + port);
     }
 

@@ -1,7 +1,7 @@
 package net.komunikator.server.network;
 
 import de.root1.simon.annotation.SimonRemote;
-import net.komunikator.server.common.Config;
+import net.komunikator.server.common.SharedData;
 import net.komunikator.server.managers.UpdatesManager;
 import net.komunikator.shared.network.ClientCallbackInterface;
 import net.komunikator.shared.network.ServerInterface;
@@ -33,7 +33,7 @@ public class Server implements ServerInterface {
     @Override
     public SessionInterface login(String sessionName, String password, ClientCallbackInterface clientCallback) {
         logger.info("User authentication. user:" + sessionName);
-        if (!password.equals(Config.password)) {
+        if (!password.equals(SharedData.password)) {
             clientCallback.toast("Authentication failed! Wrong password");
             logger.info("Authentication failed! Wrong password. user:" + sessionName);
             return null;
@@ -53,6 +53,10 @@ public class Server implements ServerInterface {
 
     public Session getSession(long sessionId) {
         return sessions.get(sessionId);
+    }
+
+    public final List<Session> getLoggedClients() {
+        return loggedClients;
     }
 
     public void removeSession(Session session) {
