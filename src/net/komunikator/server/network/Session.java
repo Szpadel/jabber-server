@@ -2,6 +2,7 @@ package net.komunikator.server.network;
 
 import de.root1.simon.SimonUnreferenced;
 import de.root1.simon.annotation.SimonRemote;
+import net.komunikator.shared.network.ClientCallbackInterface;
 import net.komunikator.shared.network.SessionInterface;
 
 import java.io.Serializable;
@@ -18,11 +19,13 @@ public class Session implements SessionInterface, SimonUnreferenced, Serializabl
     private long sessionId;
     private String sessionName;
     private Server server;
+    ClientCallbackInterface client;
 
-    public Session(long sessionId, String sessionName, Server server) {
+    public Session(long sessionId, String sessionName, Server server, ClientCallbackInterface client) {
         this.sessionId = sessionId;
         this.sessionName = sessionName;
         this.server = server;
+        this.client = client;
     }
 
     @Override
@@ -33,6 +36,10 @@ public class Session implements SessionInterface, SimonUnreferenced, Serializabl
     @Override
     public String getSessionName() {
         return sessionName;
+    }
+
+    public ClientCallbackInterface getClient() {
+        return client;
     }
 
     @Override

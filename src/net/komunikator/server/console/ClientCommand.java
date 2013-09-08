@@ -18,17 +18,33 @@ public class ClientCommand extends Command {
 
     public void printSessionsList(PrintStream out, List<Session> sessions) {
         out.println("Active sessions:");
-        for(Session session : sessions) {
+        for (Session session : sessions) {
             out.println("id:" + session.getSessionId() + " name:" + session.getSessionName());
         }
     }
 
     @Override
     public void runCommand(PrintStream out, String command) {
-        if(command.startsWith("list ")) {
+        if (command.startsWith("list ")) {
             Server server = SharedData.serverObject;
             printSessionsList(out, server.getLoggedClients());
-        }else {
+        } else if (command.startsWith("toast ")) {
+            command = command.substring("toast ".length());
+            String[] params = command.split(" ", 2);
+            if (params.length != 2) {
+                out.println("syntax: client toast [id] [message]");
+                return;
+            }
+            long id = Long.valueOf(params[0].trim());
+
+            Server server = SharedData.serverObject;
+            Session session = server.getSession(id);
+            if (session == null) {
+                out.println("invalid session id");
+                return;
+            }
+            session.getClient().toast(params[1]);
+        } else {
             out.println("syntax: client ");
             out.println("               list");
             out.println("               toast [message]");

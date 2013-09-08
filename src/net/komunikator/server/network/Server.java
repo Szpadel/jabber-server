@@ -38,7 +38,7 @@ public class Server implements ServerInterface {
             logger.info("Authentication failed! Wrong password. user:" + sessionName);
             return null;
         }
-        Session session = new Session(sessionId, sessionName, this);
+        Session session = new Session(sessionId, sessionName, this, clientCallback);
         loggedClients.add(session);
         sessions.put(sessionId, session);
         logger.info("User authenticated! user:" + sessionName + " id:" + sessionId);
