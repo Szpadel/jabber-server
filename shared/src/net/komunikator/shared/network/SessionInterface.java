@@ -15,4 +15,6 @@ public interface SessionInterface {
     public String getSessionName();
 
     public boolean isValid();
+
+    public void synchronize();
 }

@@ -11,4 +11,8 @@ public interface ClientCallbackInterface {
     // methods for client
 
     public void toast(String message);
+
+    public void addContact(int id, int connection, String name, int status, String jid, String statusDescription);
+
+    public void addConnection(int id, String username, String domain, String resource);
 }
