@@ -20,6 +20,9 @@ public class Contact extends Model {
         changed();
     }
 
+    public Contact() {
+    }
+
     public void updateStatus(int status, String description) {
         this.status = status;
         this.statusDescription = description;
@@ -28,6 +31,10 @@ public class Contact extends Model {
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Connection getConnection() {
