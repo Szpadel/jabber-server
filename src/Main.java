@@ -30,7 +30,7 @@ public class Main {
         LOGGER.setLevel(Level.ALL);
         LogManager.getLogManager().getLogger(Logger.GLOBAL_LOGGER_NAME).setLevel(Level.ALL);
         for (Handler handler : LOGGER.getHandlers()) {
-            handler.setLevel(Level.ALL);
+            handler.setLevel(Level.INFO);
         }
         LOGGER.info("Server started");
 

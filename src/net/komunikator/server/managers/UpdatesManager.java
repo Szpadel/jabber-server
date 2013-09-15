@@ -4,6 +4,7 @@ import net.komunikator.server.common.SharedData;
 import net.komunikator.server.event.*;
 import net.komunikator.server.models.Connection;
 import net.komunikator.server.models.Contact;
+import net.komunikator.server.models.Message;
 import net.komunikator.server.models.Model;
 import net.komunikator.server.network.Session;
 
@@ -57,7 +58,7 @@ public class UpdatesManager {
         for (Map.Entry<Long, Queue<Model>> queueSet : pendingUpdates.entrySet()) {
             if (!queueSet.getValue().contains(model)) {
                 Session session = SharedData.serverObject.getSession(queueSet.getKey());
-                if(session == null) {
+                if (session == null) {
                     continue;
                 }
                 queueSet.getValue().add(model);
@@ -68,13 +69,16 @@ public class UpdatesManager {
     }
 
     private void addModel(Model model, Session session) {
-        if(model instanceof Connection) {
+        if (model instanceof Connection) {
             Connection connection = (Connection) model;
             session.addConnection(connection);
 
-        }else if(model instanceof Contact) {
+        } else if (model instanceof Contact) {
             Contact contact = (Contact) model;
             session.addContact(contact);
+        } else if (model instanceof Message) {
+            Message message = (Message) model;
+            session.addMessage(message);
         }
     }
 

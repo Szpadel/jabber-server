@@ -15,4 +15,6 @@ public interface ClientCallbackInterface {
     public void addContact(int id, int connection, String name, int status, String jid, String statusDescription);
 
     public void addConnection(int id, String username, String domain, String resource);
+
+    public void addMessage(int id, int contactid, String message, int send_by);
 }

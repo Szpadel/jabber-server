@@ -17,4 +17,6 @@ public interface SessionInterface {
     public boolean isValid();
 
     public void synchronize();
+
+    public void sendMessage(int contactId, String message);
 }
