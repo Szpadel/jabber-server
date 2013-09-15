@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class name="net.komunikator.server.models.Connection" table="CONNECTIONS">
+        <id name="id" type="int" column="connection_id">
+            <generator class="native"/>
+        </id>
+        <property name="name">
+            <column name="name"/>
+        </property>
+        <property name="username">
+            <column name="username"/>
+        </property>
+        <property name="password">
+            <column name="password"/>
+        </property>
+        <property name="domain">
+            <column name="domain"/>
+        </property>
+        <property name="resource">
+            <column name="resource"/>
+        </property>
+    </class>
+
+    <class name="net.komunikator.server.models.Contact" table="CONTACTS">
+        <id name="id" type="int" column="contact_id">
+            <generator class="native"/>
+        </id>
+        <!--<property name="connection"/>-->
+        <property name="name">
+            <column name="name"/>
+        </property>
+        <property name="status">
+            <column name="status"/>
+        </property>
+        <property name="jid">
+            <column name="jid"/>
+        </property>
+        <property name="statusDescription">
+            <column name="status_description"/>
+        </property>
+
+        <many-to-one name="connection" column="connection_id" not-null="true"/>
+
+    </class>
+
+    <class name="net.komunikator.server.models.Message" table="MESSAGES">
+        <id name="id" type="int" column="message_id">
+            <generator class="native"/>
+        </id>
+        <property name="timestamp">
+            <column name="timestamp"/>
+        </property>
+        <!--<property name="contact"/>-->
+        <!--<property name="connection"/>-->
+        <property name="message">
+            <column name="message"/>
+        </property>
+        <property name="sendBy">
+            <column name="send_by"/>
+        </property>
+
+        <many-to-one name="connection" column="connection_id" not-null="true"/>
+        <many-to-one name="contact" column="contact_id" not-null="true"/>
+
+    </class>
+
+
+</hibernate-mapping>

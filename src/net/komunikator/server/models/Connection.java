@@ -48,6 +48,30 @@ public class Connection extends Model {
 
     }
 
+    public Connection(String name, String username, String domain, String resource, String password) {
+
+        this.name = name;
+        this.username = username;
+        this.domain = domain;
+        this.resource = resource;
+        this.password = password;
+
+        eventDispatcher.registerListener("server.shutdown", new EventListenerInterface() {
+            @Override
+            public void receiveEvent(Event event) {
+                disconnect();
+            }
+        });
+
+        openChats = new LinkedHashMap<String, Chat>();
+        created();
+
+    }
+
+    public Connection() {
+    }
+
+
     public boolean isConnected() {
         return connection != null && connection.isConnected();
     }
@@ -58,6 +82,10 @@ public class Connection extends Model {
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {

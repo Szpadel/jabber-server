@@ -26,6 +26,9 @@ public class Message extends Model {
         changed();
     }
 
+    public Message() {
+    }
+
     public int getId() {
         return id;
     }
